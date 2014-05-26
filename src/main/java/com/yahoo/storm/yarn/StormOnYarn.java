@@ -17,6 +17,7 @@
 package com.yahoo.storm.yarn;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -214,8 +215,8 @@ public class StormOnYarn {
         LOG.info("Set the environment for the application master");
         Map<String, String> env = new HashMap<String, String>();
         // add the runtime classpath needed for tests to work
-        Apps.addToEnvironment(env, Environment.CLASSPATH.name(), "./conf");
-        Apps.addToEnvironment(env, Environment.CLASSPATH.name(), "./AppMaster.jar");
+        Apps.addToEnvironment(env, Environment.CLASSPATH.name(), "./conf", File.pathSeparator);
+        Apps.addToEnvironment(env, Environment.CLASSPATH.name(), "./AppMaster.jar", File.pathSeparator);
 
         //Make sure that AppMaster has access to all YARN JARs
         List<String> yarn_classpath_cmd = java.util.Arrays.asList("yarn", "classpath");
@@ -237,11 +238,11 @@ public class StormOnYarn {
         LOG.info("YARN CLASSPATH = [" + yarn_class_path + "]");
         proc.waitFor();
         reader.close();
-        Apps.addToEnvironment(env, Environment.CLASSPATH.name(), yarn_class_path);
+        Apps.addToEnvironment(env, Environment.CLASSPATH.name(), yarn_class_path, File.pathSeparator);
         
         String stormHomeInZip = Util.getStormHomeInZip(fs, zip, stormVersion.version());
-        Apps.addToEnvironment(env, Environment.CLASSPATH.name(), "./storm/" + stormHomeInZip + "/*");
-        Apps.addToEnvironment(env, Environment.CLASSPATH.name(), "./storm/" + stormHomeInZip + "/lib/*");
+        Apps.addToEnvironment(env, Environment.CLASSPATH.name(), "./storm/" + stormHomeInZip + "/*", File.pathSeparator);
+        Apps.addToEnvironment(env, Environment.CLASSPATH.name(), "./storm/" + stormHomeInZip + "/lib/*", File.pathSeparator);
 
         String java_home = (String) _stormConf.get("storm.yarn.java_home");
         if (java_home == null)

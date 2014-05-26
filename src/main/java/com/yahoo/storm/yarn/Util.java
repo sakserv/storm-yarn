@@ -63,7 +63,9 @@ class Util {
   private static final String STORM_CONF_PATH_STRING = "conf" + Path.SEPARATOR + "storm.yaml";
 
   static String getStormHome() {
-      String ret = System.getProperty("storm.home");
+      //String ret = System.getProperty("storm.home");
+      String ret = "/usr/lib/storm";
+      System.out.println("Storm Home: " + ret);
       if (ret == null) {
         throw new RuntimeException("storm.home is not set");
       }
@@ -75,6 +77,8 @@ class Util {
 
     String versionNumber = "Unknown";
     File releaseFile = new File(getStormHome(), "RELEASE");
+    System.out.println("Release File: " + releaseFile);
+    
     if (releaseFile.exists()) {
       BufferedReader reader = new BufferedReader(new FileReader(releaseFile));
       try {
