@@ -64,7 +64,7 @@ class Util {
 
   static String getStormHome() {
       //String ret = System.getProperty("storm.home");
-      String ret = "/usr/lib/storm";
+      String ret = "/usr/lib/storm-0.9.0-wip21";
       System.out.println("Storm Home: " + ret);
       if (ret == null) {
         throw new RuntimeException("storm.home is not set");
